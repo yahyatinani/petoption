@@ -2,7 +2,6 @@ buildscript {
     repositories {
         gradlePluginPortal()
         google()
-
         mavenCentral()
     }
     dependencies {
@@ -12,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id(Plugins.Ktlint.id) version Plugins.Ktlint.version
+    id(Plugins.Spotless.id) version Plugins.Spotless.version
 }
 
 allprojects {
@@ -26,9 +25,21 @@ allprojects {
 }
 
 subprojects {
-    apply(plugin = Plugins.Ktlint.id)
+    repositories {
+        google()
+        mavenCentral()
+    }
 
-    configure<org.jlleitschuh.gradle.ktlint.KtlintExtension> {
-        debug.set(true)
+    apply(plugin = Plugins.Spotless.id)
+
+    spotless {
+        kotlin {
+            target("**/*.kt")
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude("bin/**/*.kt")
+
+            ktlint("0.40.0")
+            licenseHeaderFile(rootProject.file("spotless/copyright.kt"))
+        }
     }
 }

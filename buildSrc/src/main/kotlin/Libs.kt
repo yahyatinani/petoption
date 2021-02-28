@@ -45,14 +45,6 @@ object Libs {
         const val property = "io.kotest:kotest-property:$version"
     }
 
-    object Y {
-        private const val group = "com.github.whyrising.y"
-        private const val version = "0.0.2.1"
-
-        const val core = "$group:y-core:$version"
-        const val collections = "$group:y-collections:$version"
-    }
-
     object Kotlinx {
         private const val group = "org.jetbrains.kotlinx"
         private const val version = "1.4.2"
