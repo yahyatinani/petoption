@@ -73,6 +73,7 @@ android {
 }
 
 dependencies {
+    implementation(Libs.AndroidMaterial.material)
     implementation(Libs.Compose.ui)
     implementation(Libs.Compose.uiTooling)
     implementation(Libs.Compose.foundation)
@@ -81,7 +82,6 @@ dependencies {
     implementation(Libs.Compose.iconsExt)
     implementation(Libs.Compose.activity)
     implementation(Libs.Compose.viewModels)
-
     implementation(Libs.Kotlinx.coroutines)
 
     debugImplementation(Libs.LayoutInspector.uiTooling)

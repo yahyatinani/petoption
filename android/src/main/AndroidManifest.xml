@@ -8,10 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Compose.Template">
+        android:theme="@style/Theme.AndroidDevChallenge">
         <activity
             android:name=".view.SplashActivity"
-            android:theme="@style/Theme.Compose.Template.Splash">
+            android:theme="@style/Theme.AndroidDevChallenge.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -19,14 +19,14 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.github.whyrising.androiddevchallenge.theme.TemplateTheme
+import com.github.whyrising.androiddevchallenge.theme.MyTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
-            TemplateTheme {
+            MyTheme(windows = window) {
                 Greeting("Android ${Build.VERSION.SDK_INT}")
             }
         }

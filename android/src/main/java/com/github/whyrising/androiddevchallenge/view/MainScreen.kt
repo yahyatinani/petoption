@@ -30,7 +30,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import com.github.whyrising.androiddevchallenge.theme.TemplateTheme
+import com.github.whyrising.androiddevchallenge.theme.MyTheme
 
 @Composable
 private fun formatHelloText(name: String): AnnotatedString =
@@ -63,7 +63,7 @@ fun Greeting(name: String) {
 @Composable
 @Preview
 fun GreetingPreview() {
-    TemplateTheme {
+    MyTheme {
         Greeting(name = "Jetpack Compose")
     }
 }
@@ -71,7 +71,7 @@ fun GreetingPreview() {
 @Composable
 @Preview
 fun GreetingDarkPreview() {
-    TemplateTheme(isDarkTheme = true) {
+    MyTheme(isDarkTheme = true) {
         Greeting(name = "Jetpack Compose")
     }
 }

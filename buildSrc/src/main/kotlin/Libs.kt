@@ -2,6 +2,12 @@ object Libs {
     const val kotlinVersion = "1.4.30"
     const val jvmTarget = "1.8"
 
+    object AndroidMaterial {
+        private const val version = "1.3.0"
+
+        const val material = "com.google.android.material:material:$version"
+    }
+
     object Compose {
         private const val gr = "androidx.compose"
         const val version = "1.0.0-beta01"
