@@ -15,7 +15,6 @@
  */
 package com.github.whyrising.androiddevchallenge.view
 
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -27,7 +26,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyTheme(windows = window) {
-                Greeting("Android ${Build.VERSION.SDK_INT}")
+                MyApp()
             }
         }
     }

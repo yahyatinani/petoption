@@ -15,63 +15,144 @@
  */
 package com.github.whyrising.androiddevchallenge.view
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.Typography
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
 
 @Composable
-private fun formatHelloText(name: String): AnnotatedString =
-    buildAnnotatedString {
-        append("Hello ")
-        withStyle(
-            SpanStyle(
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colors.primary
-            )
-        ) {
-            append(name)
+fun CustomTextField(
+    value: String,
+    modifier: Modifier,
+    typography: Typography
+) {
+    val colors = MaterialTheme.colors
+
+    BasicTextField(
+        value = value,
+        modifier = modifier
+            .background(
+                color = colors.primary.copy(0.1f),
+                shape = CircleShape
+            ),
+        textStyle = TextStyle(color = colors.onSurface.copy(.7f))
+            .merge(typography.caption),
+        singleLine = true,
+        onValueChange = { /*TODO*/ },
+        decorationBox = { textField ->
+            Row(
+                modifier = Modifier.padding(8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Row(
+                    modifier = modifier,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        modifier = Modifier.size(16.dp),
+                        tint = colors.primary,
+                        contentDescription = "Location"
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    textField()
+                }
+                Icon(
+                    imageVector = Icons.Default.Close,
+                    modifier = Modifier.size(16.dp),
+                    tint = colors.onSurface.copy(0.5f),
+                    contentDescription = "Clear text"
+                )
+            }
         }
-        append(" \uD83D\uDE01")
-    }
+    )
+}
 
 @Composable
-fun Greeting(name: String) {
+fun SearchBar(typography: Typography) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        CustomTextField(
+            value = "New York, USA",
+            modifier = Modifier.weight(1f),
+            typography = typography,
+        )
+        Spacer(modifier = Modifier.width(32.dp))
+        Image(
+            painter = painterResource(id = R.drawable.sample_avatar),
+            contentDescription = "Avatar",
+            modifier = Modifier
+                .size(34.dp)
+                .clip(CircleShape)
+        )
+    }
+}
+
+@Composable
+fun MyApp() {
     Scaffold {
-        Surface {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Box(modifier = Modifier.align(Alignment.Center)) {
-                    Text(text = formatHelloText(name))
-                }
+        Surface(
+            modifier = Modifier.padding(
+                top = 16.dp,
+                start = 16.dp,
+                end = 16.dp
+            )
+        ) {
+            val typography = MaterialTheme.typography
+            Column {
+                SearchBar(typography)
             }
         }
     }
 }
 
+/**
+ *
+ * Previews
+ *
+ **/
+
 @Composable
 @Preview
-fun GreetingPreview() {
+fun LightPreview() {
     MyTheme {
-        Greeting(name = "Jetpack Compose")
+        MyApp()
     }
 }
 
 @Composable
 @Preview
-fun GreetingDarkPreview() {
+fun DarkPreview() {
     MyTheme(isDarkTheme = true) {
-        Greeting(name = "Jetpack Compose")
+        MyApp()
     }
 }
