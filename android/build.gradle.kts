@@ -74,6 +74,7 @@ android {
 
 dependencies {
     implementation(Libs.AndroidMaterial.material)
+    implementation(Libs.AndroidX.constraintlayout)
     implementation(Libs.Compose.ui)
     implementation(Libs.Compose.uiTooling)
     implementation(Libs.Compose.foundation)

@@ -38,6 +38,12 @@ object Libs {
         const val uiTestJUnit = "$gr.ui:ui-test-junit4:$version"
     }
 
+    object AndroidX {
+        private const val version = "1.0.0-alpha03"
+        const val constraintlayout =
+            "androidx.constraintlayout:constraintlayout-compose:$version"
+    }
+
     object LayoutInspector {
         const val uiTooling = Compose.uiTooling
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
