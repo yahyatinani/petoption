@@ -30,6 +30,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -53,12 +55,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.github.whyrising.androiddevchallenge.R
+import com.github.whyrising.androiddevchallenge.theme.Green100
+import com.github.whyrising.androiddevchallenge.theme.Green900
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
 
 @Composable
@@ -185,54 +190,118 @@ fun CustomOutlinedTextField(
 }
 
 @Composable
+fun PetCategory(
+    item: String,
+    modifier: Modifier,
+    colorFilter: ColorFilter,
+) {
+    val typography = MaterialTheme.typography
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val colors = MaterialTheme.colors
+        Box(
+            modifier = modifier
+                .padding(16.dp)
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.dog_outline),
+                contentDescription = "Dog outline",
+                modifier = Modifier.size(36.dp),
+                colorFilter = colorFilter,
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(
+            text = item,
+            style = TextStyle(color = colors.onSurface.copy(.7f))
+                .merge(typography.subtitle2),
+        )
+    }
+}
+
+@Composable
 fun MyApp() {
     Scaffold {
-        Surface(
-            modifier = Modifier.padding(
-                top = 16.dp,
-                start = 16.dp,
-                end = 16.dp
-            )
-        ) {
+        Surface {
             var searchTextFiledState by remember { mutableStateOf("") }
 
             val colors = MaterialTheme.colors
             val typography = MaterialTheme.typography
             Column {
-                SearchBar(typography)
+                Column(
+                    modifier = Modifier.padding(
+                        top = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+                ) {
+                    SearchBar(typography)
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    CustomOutlinedTextField(
+                        value = searchTextFiledState,
+                        onValueChange = { searchTextFiledState = it },
+                        textStyle = TextStyle(color = colors.onSurface.copy(.7f))
+                            .merge(typography.subtitle2),
+                        placeholder = {
+                            Text(
+                                text = "Search",
+                                style = TextStyle(colors.onSurface.copy(.4f))
+                                    .merge(typography.subtitle2),
+                            )
+                        },
+                        trailingIcon = { modifier ->
+                            IconButton(
+                                modifier = modifier
+                                    .background(
+                                        colors.primary,
+                                        shape = RoundedCornerShape(12.dp),
+                                    ),
+                                onClick = { /*TODO*/ },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Search,
+                                    contentDescription = "Search",
+                                    tint = colors.surface,
+                                    modifier = Modifier.size(28.dp),
+                                )
+                            }
+                        }
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                CustomOutlinedTextField(
-                    value = searchTextFiledState,
-                    onValueChange = { searchTextFiledState = it },
-                    textStyle = TextStyle(color = colors.onSurface.copy(.7f))
-                        .merge(typography.subtitle2),
-                    placeholder = {
-                        Text(
-                            text = "Search",
-                            style = TextStyle(colors.onSurface.copy(.4f))
-                                .merge(typography.subtitle2),
-                        )
-                    },
-                    trailingIcon = { modifier ->
-                        IconButton(
-                            modifier = modifier
-                                .background(
-                                    colors.primary,
-                                    shape = RoundedCornerShape(12.dp),
+                val list = listOf("Dogs", "Cats", "Birds", "Rabbits", "Fish")
+
+                LazyRow(modifier = Modifier.padding(start = 16.dp)) {
+                    items(list) { item ->
+                        when (item) {
+                            "Dogs" -> PetCategory(
+                                item,
+                                modifier = Modifier
+                                    .background(
+                                        color = Green100,
+                                        shape = RoundedCornerShape(15.dp),
+                                    ),
+                                colorFilter = ColorFilter.tint(Green900),
+                            )
+                            else -> PetCategory(
+                                item = item,
+                                modifier = Modifier
+                                    .border(
+                                        width = 1.dp,
+                                        color = colors.onSurface.copy(.06f),
+                                        shape = RoundedCornerShape(15.dp),
+                                    ),
+                                colorFilter = ColorFilter.tint(
+                                    color = colors.onSurface.copy(.5f),
                                 ),
-                            onClick = { /*TODO*/ },
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Search,
-                                contentDescription = "Search",
-                                tint = colors.surface,
-                                modifier = Modifier.size(28.dp),
                             )
                         }
+                        Spacer(modifier = Modifier.width(16.dp))
                     }
-                )
+                }
             }
         }
     }
