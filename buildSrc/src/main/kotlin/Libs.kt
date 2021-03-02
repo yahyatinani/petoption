@@ -42,6 +42,8 @@ object Libs {
         private const val version = "1.0.0-alpha03"
         const val constraintlayout =
             "androidx.constraintlayout:constraintlayout-compose:$version"
+        const val navigation =
+            "androidx.navigation:navigation-compose:1.0.0-alpha08"
     }
 
     object LayoutInspector {

@@ -27,6 +27,7 @@ import androidx.compose.material.Typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,8 +38,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
 
@@ -77,8 +79,16 @@ private fun IconTextBox(
     }
 }
 
+private fun placeholderText(): String {
+    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+        "Sed feugiat tellus quis lobortis varius. Quisque in vestibulum urna," +
+        " non dignissim nulla. Quisque ac nulla in justo finibus consequat " +
+        "vel non velit. Sed vitae purus arcu. Sed tristique elit orci, nec " +
+        "sodales metus cursus non."
+}
+
 @Composable
-fun PetDetails() {
+fun PetDetails(navController: NavController, pet: Map<String, Any>) {
     Scaffold(
         topBar = {
             TopAppBar(
@@ -91,7 +101,9 @@ fun PetDetails() {
                         contentDescription = null,
                         modifier = Modifier
                             .size(24.dp, 24.dp)
-                            .clickable {},
+                            .clickable {
+                                navController.navigateUp()
+                            },
                     )
                 }
             )
@@ -126,7 +138,7 @@ fun PetDetails() {
                                     bottomEnd = roundFactor,
                                 )
                             ),
-                        painter = painterResource(id = R.drawable.dog1),
+                        painter = painterResource(id = pet["id"] as Int),
                         contentScale = ContentScale.Crop,
                         contentDescription = "Dog image",
                     )
@@ -139,8 +151,15 @@ fun PetDetails() {
                             },
                         size = 40.dp
                     ) {
+                        val isLiked = pet["liked"] as Boolean
+
+                        val imageVector = when {
+                            isLiked -> Icons.Filled.Favorite
+                            else -> Icons.Filled.FavoriteBorder
+                        }
+
                         Icon(
-                            imageVector = Icons.Filled.Favorite,
+                            imageVector = imageVector,
                             contentDescription = "",
                             tint = colors.primary
                         )
@@ -171,12 +190,13 @@ fun PetDetails() {
                             },
                     ) {
                         Text(
-                            text = "Hector", style = typography.h4.merge(
+                            text = pet["name"] as String,
+                            style = typography.h4.merge(
                                 TextStyle(color = colors.primary)
                             )
                         )
                         Text(
-                            text = "Wolf dog",
+                            text = pet["breed"] as String,
                             style = typography.subtitle2.copy(
                                 colors.onSurface.copy(.4f)
                             )
@@ -194,9 +214,21 @@ fun PetDetails() {
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
+                    val genderText: String
+                    val genderIcon: Int
+                    val i = pet["gender"] as Int
+
+                    if (i == 0) {
+                        genderText = "Boy"
+                        genderIcon = R.drawable.ic_mars
+                    } else {
+                        genderText = "Girl"
+                        genderIcon = R.drawable.ic_venus
+                    }
+
                     IconTextBox(
-                        "Boy",
-                        painterResource(id = R.drawable.ic_mars),
+                        genderText,
+                        painterResource(id = genderIcon),
                         colors,
                         typography
                     )
@@ -249,18 +281,10 @@ fun PetDetails() {
                         }
                     }
                 }
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
-}
-
-@Composable
-private fun placeholderText(): String {
-    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Sed feugiat tellus quis lobortis varius. Quisque in vestibulum urna," +
-        " non dignissim nulla. Quisque ac nulla in justo finibus consequat " +
-        "vel non velit. Sed vitae purus arcu. Sed tristique elit orci, nec " +
-        "sodales metus cursus non."
 }
 
 /**
@@ -269,11 +293,22 @@ private fun placeholderText(): String {
  *
  **/
 
+private val dogDesignTime = mapOf(
+    "id" to R.drawable.dog1,
+    "name" to "Hector",
+    "breed" to "Wolf dog",
+    "gender" to 0,
+    "liked" to true,
+)
+
 @Composable
 @Preview
 fun PetDetailsLightPreview() {
+
     MyTheme {
-        PetDetails()
+        PetDetails(
+            rememberNavController(), dogDesignTime
+        )
     }
 }
 
@@ -281,6 +316,6 @@ fun PetDetailsLightPreview() {
 @Preview
 fun PetDetailsDarkPreview() {
     MyTheme(isDarkTheme = true) {
-        PetDetails()
+        PetDetails(rememberNavController(), dogDesignTime)
     }
 }

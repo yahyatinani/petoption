@@ -20,6 +20,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -57,10 +58,6 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -74,6 +71,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.navigation.NavController
+import androidx.navigation.compose.navigate
+import androidx.navigation.compose.rememberNavController
 import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.Blue700
 import com.github.whyrising.androiddevchallenge.theme.Green100
@@ -140,6 +140,44 @@ fun LocationTextField(
                     modifier = Modifier.size(16.dp),
                     tint = colors.onSurface.copy(0.5f),
                     contentDescription = "Clear text"
+                )
+            }
+        }
+    )
+}
+
+@Composable
+fun PetSearchTextField(
+    vm: MainViewModel,
+    colors: Colors,
+    typography: Typography
+) {
+    CustomOutlinedTextField(
+        value = vm.petSearch,
+        onValueChange = { vm.petSearch = it },
+        textStyle = TextStyle(color = colors.onSurface.copy(.7f))
+            .merge(typography.subtitle2),
+        placeholder = {
+            Text(
+                text = "Search",
+                style = TextStyle(colors.onSurface.copy(.4f))
+                    .merge(typography.subtitle2),
+            )
+        },
+        trailingIcon = { modifier ->
+            IconButton(
+                modifier = modifier
+                    .background(
+                        colors.primary,
+                        shape = RoundedCornerShape(12.dp),
+                    ),
+                onClick = { /*TODO*/ },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Search,
+                    contentDescription = "Search",
+                    tint = colors.surface,
+                    modifier = Modifier.size(28.dp),
                 )
             }
         }
@@ -254,6 +292,55 @@ fun PetCategory(
 }
 
 @Composable
+fun PetCategories(
+    modifier: Modifier,
+    vm: MainViewModel,
+    colors: Colors,
+) {
+    LazyRow(modifier = modifier) {
+        items(vm.petCategories) { petCategory ->
+            val title: String
+            val painter: Painter
+            val colorFilter: ColorFilter
+            when (petCategory) {
+                Category.Dog -> {
+                    title = stringResource(R.string.dogs_category)
+                    painter = painterResource(R.drawable.ic_dog_outline)
+                    colorFilter = ColorFilter.tint(Green900)
+                }
+                Category.Cat -> {
+                    title = stringResource(R.string.cats_category)
+                    painter = painterResource(R.drawable.ic_cat_outline)
+                    colorFilter = ColorFilter.tint(
+                        color = colors.onSurface.copy(.5f),
+                    )
+                }
+                else -> TODO()
+            }
+            val m = when (vm.selectedCategory) {
+                petCategory -> Modifier.background(
+                    color = Green100,
+                    shape = RoundedCornerShape(15.dp),
+                )
+                else -> Modifier.border(
+                    width = 2.dp,
+                    color = colors.onSurface.copy(.06f),
+                    shape = RoundedCornerShape(15.dp),
+                )
+            }
+
+            PetCategory(
+                title = title,
+                painter = painter,
+                modifier = m,
+                colorFilter = colorFilter,
+            )
+            Spacer(modifier = Modifier.width(16.dp))
+        }
+    }
+}
+
+@Composable
 fun DotDivider(modifier: Modifier = Modifier) {
     val widthSpace = Modifier.width(8.dp)
     Spacer(modifier = widthSpace)
@@ -273,10 +360,13 @@ fun DotDivider(modifier: Modifier = Modifier) {
 fun PetCell(
     modifier: Modifier,
     colors: Colors,
-    petViewModel: PetViewModel
+    petViewModel: PetViewModel,
+    onItemClicked: (PetViewModel) -> Unit,
 ) {
     Card(
-        modifier = modifier.padding(bottom = 20.dp),
+        modifier = modifier
+            .padding(bottom = 20.dp)
+            .clickable(onClick = { onItemClicked(petViewModel) }),
         elevation = 1.dp,
         backgroundColor = MaterialTheme.colors.surface,
         border = BorderStroke(
@@ -372,11 +462,9 @@ fun PetCell(
 
 @ExperimentalFoundationApi
 @Composable
-fun MyApp(vm: MainViewModel) {
+fun MyApp(vm: MainViewModel, navController: NavController) {
     Scaffold {
         Surface {
-            var searchTextFiledState by remember { mutableStateOf("") }
-
             val colors = MaterialTheme.colors
             val typography = MaterialTheme.typography
             Column {
@@ -386,78 +474,21 @@ fun MyApp(vm: MainViewModel) {
                     start = outerPadding,
                     end = outerPadding
                 )
-                Column(
-                    modifier = outerModifier
-                ) {
+                Column(modifier = outerModifier) {
                     LocationSearchBar(vm, typography)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
-                    CustomOutlinedTextField(
-                        value = searchTextFiledState,
-                        onValueChange = { searchTextFiledState = it },
-                        textStyle = TextStyle(color = colors.onSurface.copy(.7f))
-                            .merge(typography.subtitle2),
-                        placeholder = {
-                            Text(
-                                text = "Search",
-                                style = TextStyle(colors.onSurface.copy(.4f))
-                                    .merge(typography.subtitle2),
-                            )
-                        },
-                        trailingIcon = { modifier ->
-                            IconButton(
-                                modifier = modifier
-                                    .background(
-                                        colors.primary,
-                                        shape = RoundedCornerShape(12.dp),
-                                    ),
-                                onClick = { /*TODO*/ },
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Search,
-                                    contentDescription = "Search",
-                                    tint = colors.surface,
-                                    modifier = Modifier.size(28.dp),
-                                )
-                            }
-                        }
-                    )
+                    PetSearchTextField(vm, colors, typography)
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                LazyRow(modifier = Modifier.padding(start = outerPadding)) {
-                    items(vm.petCategories) { petCategory ->
-                        when (petCategory) {
-                            Category.Dog -> PetCategory(
-                                stringResource(R.string.dogs_category),
-                                painter = painterResource(id = R.drawable.ic_dog_outline),
-                                modifier = Modifier
-                                    .background(
-                                        color = Green100,
-                                        shape = RoundedCornerShape(15.dp),
-                                    ),
-                                colorFilter = ColorFilter.tint(Green900),
-                            )
-                            else ->
-                                PetCategory(
-                                    title = stringResource(R.string.cats_category),
-                                    painter = painterResource(id = R.drawable.ic_cat_outline),
-                                    modifier = Modifier
-                                        .border(
-                                            width = 2.dp,
-                                            color = colors.onSurface.copy(.06f),
-                                            shape = RoundedCornerShape(15.dp),
-                                        ),
-                                    colorFilter = ColorFilter.tint(
-                                        color = colors.onSurface.copy(.5f),
-                                    ),
-                                )
-                        }
-                        Spacer(modifier = Modifier.width(16.dp))
-                    }
-                }
+                PetCategories(
+                    modifier = Modifier.padding(start = outerPadding),
+                    vm = vm,
+                    colors = colors,
+                )
 
                 Spacer(modifier = Modifier.height(24.dp))
 
@@ -471,7 +502,13 @@ fun MyApp(vm: MainViewModel) {
                             index % 2 == 0 -> Modifier.padding(end = padding)
                             else -> Modifier.padding(start = padding)
                         }
-                        PetCell(modifier, colors, petViewModel)
+                        PetCell(modifier, colors, petViewModel) { petVm ->
+                            val gender = when (petVm.gender) {
+                                Gender.Male -> 0
+                                else -> 1
+                            }
+                            navController.navigate("$petDetails/${petVm.id}/${petVm.name}/${petVm.breed}/$gender/${petVm.isLiked}")
+                        }
                     }
                 }
             }
@@ -490,7 +527,7 @@ fun MyApp(vm: MainViewModel) {
 @Preview
 fun LightPreview() {
     MyTheme {
-        MyApp(MainViewModel())
+        MyApp(MainViewModel(), rememberNavController())
     }
 }
 
@@ -499,6 +536,6 @@ fun LightPreview() {
 @Preview
 fun DarkPreview() {
     MyTheme(isDarkTheme = true) {
-        MyApp(MainViewModel())
+        MyApp(MainViewModel(), rememberNavController())
     }
 }

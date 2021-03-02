@@ -1,7 +1,7 @@
 package com.github.whyrising.androiddevchallenge.viewmodels
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.github.whyrising.androiddevchallenge.R
@@ -15,7 +15,11 @@ class MainViewModel : ViewModel() {
             "elit orci, nec sodales metus cursus non."
     }
 
+    var selectedCategory by mutableStateOf(Category.Dog)
+
     var locationSearch by mutableStateOf("New York, USA")
+
+    var petSearch by mutableStateOf("")
 
     val petCategories = listOf(Category.Dog, Category.Cat)
 
@@ -25,7 +29,7 @@ class MainViewModel : ViewModel() {
             name = "Name 1",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 1",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Male,
             about = placeholderText(),
@@ -36,7 +40,7 @@ class MainViewModel : ViewModel() {
             name = "Name 2",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 2",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Female,
             about = placeholderText(),
@@ -46,7 +50,7 @@ class MainViewModel : ViewModel() {
             name = "Name 3",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 3",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Male,
             about = placeholderText(),
@@ -56,7 +60,7 @@ class MainViewModel : ViewModel() {
             name = "Name 3",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 3",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Female,
             about = placeholderText(),
@@ -67,7 +71,7 @@ class MainViewModel : ViewModel() {
             name = "Name 5",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 5",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Female,
             about = placeholderText(),
@@ -77,7 +81,7 @@ class MainViewModel : ViewModel() {
             name = "Name 3",
             age = "9 mth.",
             weight = 6,
-            breed = "Breed 6",
+            breed = "Breed",
             category = Category.Dog,
             gender = Gender.Male,
             about = placeholderText(),

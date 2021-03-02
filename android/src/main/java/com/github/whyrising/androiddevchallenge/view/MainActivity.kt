@@ -32,7 +32,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MyTheme(windows = window) {
-                MyApp(mainViewModel)
+                ComposeNavigation(mainViewModel)
             }
         }
     }
