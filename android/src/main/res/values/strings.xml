@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Petoption</string>
+    <string name="dogs_category">Dogs</string>
+    <string name="cats_category">Cats</string>
 </resources>

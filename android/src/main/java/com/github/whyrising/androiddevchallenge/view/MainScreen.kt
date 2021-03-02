@@ -52,6 +52,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Search
@@ -63,39 +64,49 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.github.whyrising.androiddevchallenge.R
+import com.github.whyrising.androiddevchallenge.theme.Blue700
 import com.github.whyrising.androiddevchallenge.theme.Green100
 import com.github.whyrising.androiddevchallenge.theme.Green900
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
+import com.github.whyrising.androiddevchallenge.theme.Red300
+import com.github.whyrising.androiddevchallenge.viewmodels.Category
+import com.github.whyrising.androiddevchallenge.viewmodels.Gender
+import com.github.whyrising.androiddevchallenge.viewmodels.MainViewModel
+import com.github.whyrising.androiddevchallenge.viewmodels.PetViewModel
 
 @Composable
-fun CustomTextField(
-    value: String,
+fun LocationTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
+    onClear: () -> Unit = {},
     modifier: Modifier,
     typography: Typography
 ) {
     val colors = MaterialTheme.colors
 
+    val textStyle = typography.caption.copy(color = colors.onSurface.copy(.7f))
+
     BasicTextField(
-        value = value,
+        value = text,
         modifier = modifier
             .background(
                 color = colors.primary.copy(0.1f),
                 shape = CircleShape
             ),
-        textStyle = TextStyle(color = colors.onSurface.copy(.7f))
-            .merge(typography.caption),
+        textStyle = textStyle,
         singleLine = true,
-        onValueChange = { /*TODO*/ },
+        onValueChange = onValueChange,
         decorationBox = { innerTextField ->
             Row(
                 modifier = Modifier.padding(8.dp),
@@ -112,7 +123,17 @@ fun CustomTextField(
                         contentDescription = "Location"
                     )
                     Spacer(modifier = Modifier.width(8.dp))
-                    innerTextField()
+                    Box {
+                        innerTextField()
+
+                        if (text.isEmpty())
+                            Text(
+                                text = "Location",
+                                style = textStyle.copy(
+                                    color = colors.onSurface.copy(.4f),
+                                ),
+                            )
+                    }
                 }
                 Icon(
                     imageVector = Icons.Default.Close,
@@ -126,14 +147,16 @@ fun CustomTextField(
 }
 
 @Composable
-fun SearchBar(typography: Typography) {
+fun LocationSearchBar(vm: MainViewModel, typography: Typography) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        CustomTextField(
-            value = "New York, USA",
+        LocationTextField(
+            text = vm.locationSearch,
+            onValueChange = { vm.locationSearch = it },
+            onClear = { vm.locationSearch = "" },
             modifier = Modifier.weight(1f),
             typography = typography,
         )
@@ -202,7 +225,8 @@ fun CustomOutlinedTextField(
 
 @Composable
 fun PetCategory(
-    item: String,
+    title: String,
+    painter: Painter,
     modifier: Modifier,
     colorFilter: ColorFilter,
 ) {
@@ -214,15 +238,15 @@ fun PetCategory(
                 .padding(16.dp)
         ) {
             Image(
-                painter = painterResource(id = R.drawable.dog_outline),
-                contentDescription = "Dog outline",
+                painter = painter,
+                contentDescription = "",
                 modifier = Modifier.size(32.dp),
                 colorFilter = colorFilter,
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = item,
+            text = title,
             style = TextStyle(color = colors.onSurface.copy(.7f))
                 .merge(typography.subtitle2),
         )
@@ -248,7 +272,8 @@ fun DotDivider(modifier: Modifier = Modifier) {
 @Composable
 fun PetCell(
     modifier: Modifier,
-    colors: Colors
+    colors: Colors,
+    petViewModel: PetViewModel
 ) {
     Card(
         modifier = modifier.padding(bottom = 20.dp),
@@ -264,7 +289,7 @@ fun PetCell(
                 val likeBtnRef = createRef()
 
                 Image(
-                    painter = painterResource(id = R.drawable.dog1),
+                    painter = painterResource(id = petViewModel.id),
                     contentScale = ContentScale.Crop,
                     contentDescription = "",
                     modifier = Modifier
@@ -281,8 +306,12 @@ fun PetCell(
                             end.linkTo(parent.end)
                         },
                 ) {
+                    val imageVector = when {
+                        petViewModel.isLiked -> Icons.Filled.Favorite
+                        else -> Icons.Filled.FavoriteBorder
+                    }
                     Icon(
-                        imageVector = Icons.Filled.FavoriteBorder,
+                        imageVector = imageVector,
                         contentDescription = "",
                         tint = MaterialTheme.colors.primary
                     )
@@ -297,41 +326,40 @@ fun PetCell(
                     bottom = 16.dp,
                 )
             ) {
-                val textColor = Color(0xffec7172)
-                val bgColor = Color(0xffFFDEDE)
-
-                val blueText = Color(0XFF3270F6)
-                val blueBg = Color(0xffbdd7ff)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
-                        text = "Nora",
+                        text = petViewModel.name,
                         style = MaterialTheme.typography.subtitle1,
                         fontSize = 16.sp
                     )
 
+                    val pair = when (petViewModel.gender) {
+                        Gender.Male -> Pair(R.drawable.ic_mars, Blue700)
+                        else -> Pair(R.drawable.ic_venus, Red300)
+                    }
                     Icon(
-                        painter = painterResource(id = R.drawable.ic_mars),
+                        painter = painterResource(id = pair.first),
                         contentDescription = "",
                         modifier = Modifier
                             .size(24.dp)
                             .align(alignment = Alignment.CenterVertically),
-                        tint = blueText
+                        tint = pair.second
                     )
                 }
                 Spacer(modifier = Modifier.height(6.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
                     Text(
-                        text = "Corgi",
+                        text = petViewModel.breed,
                         style = MaterialTheme.typography.overline
                     )
                     DotDivider(
                         modifier = Modifier.align(Alignment.CenterVertically),
                     )
                     Text(
-                        text = "8 mth.",
+                        text = petViewModel.age,
                         modifier = Modifier
                             .align(alignment = Alignment.CenterVertically),
                         style = MaterialTheme.typography.overline,
@@ -344,7 +372,7 @@ fun PetCell(
 
 @ExperimentalFoundationApi
 @Composable
-fun MyApp() {
+fun MyApp(vm: MainViewModel) {
     Scaffold {
         Surface {
             var searchTextFiledState by remember { mutableStateOf("") }
@@ -361,7 +389,7 @@ fun MyApp() {
                 Column(
                     modifier = outerModifier
                 ) {
-                    SearchBar(typography)
+                    LocationSearchBar(vm, typography)
 
                     Spacer(modifier = Modifier.height(16.dp))
 
@@ -399,13 +427,12 @@ fun MyApp() {
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                val list = listOf("Dogs", "Cats", "Birds", "Rabbits", "Fish")
-
                 LazyRow(modifier = Modifier.padding(start = outerPadding)) {
-                    items(list) { item ->
-                        when (item) {
-                            "Dogs" -> PetCategory(
-                                item,
+                    items(vm.petCategories) { petCategory ->
+                        when (petCategory) {
+                            Category.Dog -> PetCategory(
+                                stringResource(R.string.dogs_category),
+                                painter = painterResource(id = R.drawable.ic_dog_outline),
                                 modifier = Modifier
                                     .background(
                                         color = Green100,
@@ -413,18 +440,20 @@ fun MyApp() {
                                     ),
                                 colorFilter = ColorFilter.tint(Green900),
                             )
-                            else -> PetCategory(
-                                item = item,
-                                modifier = Modifier
-                                    .border(
-                                        width = 2.dp,
-                                        color = colors.onSurface.copy(.06f),
-                                        shape = RoundedCornerShape(15.dp),
+                            else ->
+                                PetCategory(
+                                    title = stringResource(R.string.cats_category),
+                                    painter = painterResource(id = R.drawable.ic_cat_outline),
+                                    modifier = Modifier
+                                        .border(
+                                            width = 2.dp,
+                                            color = colors.onSurface.copy(.06f),
+                                            shape = RoundedCornerShape(15.dp),
+                                        ),
+                                    colorFilter = ColorFilter.tint(
+                                        color = colors.onSurface.copy(.5f),
                                     ),
-                                colorFilter = ColorFilter.tint(
-                                    color = colors.onSurface.copy(.5f),
-                                ),
-                            )
+                                )
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                     }
@@ -436,25 +465,14 @@ fun MyApp() {
                     modifier = Modifier.padding(horizontal = outerPadding),
                     cells = GridCells.Fixed(2)
                 ) {
-                    itemsIndexed(
-                        listOf(
-                            "Dog1",
-                            "Dog2",
-                            "Dog3",
-                            "Dog4",
-                            "Dog5",
-                            "Dog6"
-                        )
-                    ) { index, item ->
-
+                    itemsIndexed(vm.pets) { index, petViewModel ->
                         val padding = 10.dp
                         val modifier = when {
                             index % 2 == 0 -> Modifier.padding(end = padding)
                             else -> Modifier.padding(start = padding)
                         }
-                        PetCell(modifier, colors)
+                        PetCell(modifier, colors, petViewModel)
                     }
-
                 }
             }
         }
@@ -472,7 +490,7 @@ fun MyApp() {
 @Preview
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        MyApp(MainViewModel())
     }
 }
 
@@ -481,6 +499,6 @@ fun LightPreview() {
 @Preview
 fun DarkPreview() {
     MyTheme(isDarkTheme = true) {
-        MyApp()
+        MyApp(MainViewModel())
     }
 }

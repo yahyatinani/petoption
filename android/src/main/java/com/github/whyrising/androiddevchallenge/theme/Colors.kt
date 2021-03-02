@@ -17,13 +17,12 @@ package com.github.whyrising.androiddevchallenge.theme
 
 import androidx.compose.ui.graphics.Color
 
-// TODO: Make your own colors
-
-val Green50 = Color(0xffedfbf5)
+val Green50 = Color(0xff3270F6)
 val Green100 = Color(0xffd3f4e5)
 val Green900 = Color(0xff25855f)
 
 val Red200 = Color(0xfff297a2)
+val Red300 = Color(0xffec7172)
 val Red800 = Color(0xffd00036)
 
 val Purple100 = Color(0xffc3b8df)
