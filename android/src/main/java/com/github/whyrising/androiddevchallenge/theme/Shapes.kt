@@ -15,9 +15,12 @@
  */
 package com.github.whyrising.androiddevchallenge.theme
 
-// TODO: Remove the comment and make your own shapes
-// val TemplateShapes = Shapes(
-//    small = CutCornerShape(topLeft = 8.dp),
-//    medium = CutCornerShape(topLeft = 24.dp),
-//    large = RoundedCornerShape(8.dp)
-// )
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Shapes
+import androidx.compose.ui.unit.dp
+
+val MyShapes = Shapes(
+    small = RoundedCornerShape(18.dp),
+    medium = RoundedCornerShape(17.dp),
+//    large = RoundedCornerShape(17.dp)
+)

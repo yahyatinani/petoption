@@ -52,7 +52,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
@@ -246,28 +246,6 @@ fun DotDivider(modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun LikeButton(modifier: Modifier = Modifier) {
-    Surface(
-        modifier = modifier
-            .padding(10.dp)
-            .background(
-                color = MaterialTheme.colors.surface,
-                shape = CircleShape,
-            )
-            .clip(shape = CircleShape)
-    ) {
-        Icon(
-            imageVector = Icons.Filled.Favorite,
-            modifier = Modifier
-                .padding(4.dp)
-                .size(16.dp),
-            contentDescription = "",
-            tint = MaterialTheme.colors.primary
-        )
-    }
-}
-
-@Composable
 fun PetCell(
     modifier: Modifier,
     colors: Colors
@@ -275,7 +253,6 @@ fun PetCell(
     Card(
         modifier = modifier.padding(bottom = 20.dp),
         elevation = 1.dp,
-        shape = RoundedCornerShape(17.dp),
         backgroundColor = MaterialTheme.colors.surface,
         border = BorderStroke(
             width = 2.dp,
@@ -284,7 +261,7 @@ fun PetCell(
     ) {
         Column {
             ConstraintLayout {
-                val favIconRef = createRef()
+                val likeBtnRef = createRef()
 
                 Image(
                     painter = painterResource(id = R.drawable.dog1),
@@ -297,12 +274,19 @@ fun PetCell(
                         .padding(horizontal = 1.dp),
                 )
 
-                LikeButton(
+                CircularIconButton(
                     modifier = Modifier
-                        .constrainAs(favIconRef) {
+                        .padding(top = 12.dp, end = 12.dp)
+                        .constrainAs(likeBtnRef) {
                             end.linkTo(parent.end)
                         },
-                )
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.FavoriteBorder,
+                        contentDescription = "",
+                        tint = MaterialTheme.colors.primary
+                    )
+                }
             }
 
             Column(

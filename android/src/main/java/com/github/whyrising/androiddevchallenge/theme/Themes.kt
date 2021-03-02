@@ -57,7 +57,7 @@ fun MyTheme(
     MaterialTheme(
         colors = getAppropriateColors(isDarkTheme),
         typography = TemplateTypography,
-        shapes = MaterialTheme.shapes
+        shapes = MyShapes
     ) {
         windows?.statusBarColor = MaterialTheme.colors.primaryVariant.toArgb()
         content()
