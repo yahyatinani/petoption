@@ -503,17 +503,22 @@ fun MyApp(vm: MainViewModel, navController: NavController) {
                             else -> Modifier.padding(start = padding)
                         }
                         PetCell(modifier, colors, petViewModel) { petVm ->
-                            val gender = when (petVm.gender) {
-                                Gender.Male -> 0
-                                else -> 1
-                            }
-                            navController.navigate("$petDetails/${petVm.id}/${petVm.name}/${petVm.breed}/$gender/${petVm.isLiked}")
+                            navController.navigate(makeNavPath(petVm))
                         }
                     }
                 }
             }
         }
     }
+}
+
+private fun makeNavPath(petVm: PetViewModel): String {
+    val gender = when (petVm.gender) {
+        Gender.Male -> 0
+        else -> 1
+    }
+    return "$petDetails/${petVm.id}/${petVm.name}/${petVm.breed}" +
+        "/${petVm.about}/$gender/${petVm.isLiked}"
 }
 
 /**

@@ -1,7 +1,21 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.github.whyrising.androiddevchallenge.view
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,10 +44,6 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Highlight
-import androidx.compose.material.icons.filled.HighlightAlt
-import androidx.compose.material.icons.filled.HighlightOff
-import androidx.compose.material.icons.filled.Nightlight
-import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -84,14 +94,6 @@ private fun IconTextBox(
             )
         }
     }
-}
-
-private fun placeholderText(): String {
-    return "Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-        "Sed feugiat tellus quis lobortis varius. Quisque in vestibulum urna," +
-        " non dignissim nulla. Quisque ac nulla in justo finibus consequat " +
-        "vel non velit. Sed vitae purus arcu. Sed tristique elit orci, nec " +
-        "sodales metus cursus non."
 }
 
 @Composable
@@ -279,7 +281,7 @@ fun PetDetails(
             item {
                 Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                     Text(
-                        text = placeholderText(),
+                        text = pet["about"] as String,
                         style = typography.body1.copy(colors.onSurface.copy(.8f)),
                     )
 
@@ -324,6 +326,7 @@ private val dogDesignTime = mapOf(
     "id" to R.drawable.dog1,
     "name" to "Hector",
     "breed" to "Breed",
+    "about" to MainViewModel.placeholderText(),
     "gender" to 0,
     "liked" to true,
 )
