@@ -28,9 +28,6 @@ private val LightColors = lightColors(
     primary = Purple200,
     primaryVariant = Purple300,
     onPrimary = Color.White,
-//    secondary = Blue700,
-//    secondaryVariant = Blue900,
-//    onSecondary = Color.White,
     error = Red800
 )
 
@@ -38,8 +35,6 @@ private val DarkColors = darkColors(
     primary = Purple100,
     primaryVariant = Blue700,
     onPrimary = Color.Black,
-//    secondary = Blue300,
-//    onSecondary = Color.White,
     error = Red200
 )
 

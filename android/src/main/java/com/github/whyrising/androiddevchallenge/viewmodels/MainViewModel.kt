@@ -15,6 +15,9 @@ class MainViewModel : ViewModel() {
             "elit orci, nec sodales metus cursus non."
     }
 
+    var isDarkTheme by mutableStateOf(false)
+        private set
+
     var selectedCategory by mutableStateOf(Category.Dog)
 
     var locationSearch by mutableStateOf("New York, USA")
@@ -87,4 +90,17 @@ class MainViewModel : ViewModel() {
             about = placeholderText(),
         ),
     )
+
+    private fun darkThemeOff() {
+        isDarkTheme = false
+    }
+
+    private fun darkThemeOn() {
+        isDarkTheme = true
+    }
+
+    fun toggleLightDarkTheme() = when {
+        isDarkTheme -> darkThemeOff()
+        else -> darkThemeOn()
+    }
 }

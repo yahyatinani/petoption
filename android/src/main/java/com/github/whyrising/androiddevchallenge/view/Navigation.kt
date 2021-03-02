@@ -35,7 +35,7 @@ fun ComposeNavigation(mainViewModel: MainViewModel) {
                 "gender" to it.arguments?.getInt("gender")!!,
                 "liked" to it.arguments?.getBoolean("liked")!!,
             )
-            PetDetails(navController, map)
+            PetDetails(navController, map, mainViewModel)
         }
     }
 }

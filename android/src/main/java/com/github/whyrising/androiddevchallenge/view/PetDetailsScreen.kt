@@ -19,6 +19,7 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Colors
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -28,6 +29,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.Highlight
+import androidx.compose.material.icons.filled.HighlightAlt
+import androidx.compose.material.icons.filled.HighlightOff
+import androidx.compose.material.icons.filled.Nightlight
+import androidx.compose.material.icons.filled.WbSunny
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,6 +49,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
+import com.github.whyrising.androiddevchallenge.viewmodels.MainViewModel
 
 @Composable
 private fun IconTextBox(
@@ -88,7 +95,14 @@ private fun placeholderText(): String {
 }
 
 @Composable
-fun PetDetails(navController: NavController, pet: Map<String, Any>) {
+fun PetDetails(
+    navController: NavController,
+    pet: Map<String, Any>,
+    mainViewModel: MainViewModel
+) {
+    val colors = MaterialTheme.colors
+    val typography = MaterialTheme.typography
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -96,21 +110,34 @@ fun PetDetails(navController: NavController, pet: Map<String, Any>) {
                     Text("Details")
                 },
                 navigationIcon = {
-                    Icon(
-                        imageVector = Icons.Default.ArrowBack,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(24.dp, 24.dp)
-                            .clickable {
-                                navController.navigateUp()
-                            },
-                    )
+                    IconButton(
+                        modifier = Modifier.padding(end = 10.dp),
+                        onClick = {
+                            navController.navigateUp()
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = null,
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        modifier = Modifier.padding(end = 10.dp),
+                        onClick = {
+                            mainViewModel.toggleLightDarkTheme()
+                        },
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Highlight,
+                            contentDescription = ""
+                        )
+                    }
                 }
             )
         }
     ) {
-        val colors = MaterialTheme.colors
-        val typography = MaterialTheme.typography
         LazyColumn(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -296,7 +323,7 @@ fun PetDetails(navController: NavController, pet: Map<String, Any>) {
 private val dogDesignTime = mapOf(
     "id" to R.drawable.dog1,
     "name" to "Hector",
-    "breed" to "Wolf dog",
+    "breed" to "Breed",
     "gender" to 0,
     "liked" to true,
 )
@@ -304,11 +331,8 @@ private val dogDesignTime = mapOf(
 @Composable
 @Preview
 fun PetDetailsLightPreview() {
-
     MyTheme {
-        PetDetails(
-            rememberNavController(), dogDesignTime
-        )
+        PetDetails(rememberNavController(), dogDesignTime, MainViewModel())
     }
 }
 
@@ -316,6 +340,6 @@ fun PetDetailsLightPreview() {
 @Preview
 fun PetDetailsDarkPreview() {
     MyTheme(isDarkTheme = true) {
-        PetDetails(rememberNavController(), dogDesignTime)
+        PetDetails(rememberNavController(), dogDesignTime, MainViewModel())
     }
 }

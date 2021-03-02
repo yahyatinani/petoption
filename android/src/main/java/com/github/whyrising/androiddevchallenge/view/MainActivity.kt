@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            MyTheme(windows = window) {
+            MyTheme(windows = window, isDarkTheme = mainViewModel.isDarkTheme) {
                 ComposeNavigation(mainViewModel)
             }
         }
