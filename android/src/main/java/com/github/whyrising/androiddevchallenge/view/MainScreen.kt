@@ -15,6 +15,8 @@
  */
 package com.github.whyrising.androiddevchallenge.view
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -30,11 +32,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.Card
+import androidx.compose.material.Colors
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalTextStyle
@@ -45,6 +52,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
@@ -55,11 +63,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.Green100
@@ -205,7 +216,7 @@ fun PetCategory(
             Image(
                 painter = painterResource(id = R.drawable.dog_outline),
                 contentDescription = "Dog outline",
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(32.dp),
                 colorFilter = colorFilter,
             )
         }
@@ -219,6 +230,136 @@ fun PetCategory(
 }
 
 @Composable
+fun DotDivider(modifier: Modifier = Modifier) {
+    val widthSpace = Modifier.width(8.dp)
+    Spacer(modifier = widthSpace)
+    Box(
+        modifier = modifier
+            .size(3.dp)
+            .background(
+                color = MaterialTheme.colors.onSurface,
+                shape = CircleShape,
+            )
+            .padding(10.dp)
+    )
+    Spacer(modifier = widthSpace)
+}
+
+@Composable
+fun LikeButton(modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier
+            .padding(10.dp)
+            .background(
+                color = MaterialTheme.colors.surface,
+                shape = CircleShape,
+            )
+            .clip(shape = CircleShape)
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Favorite,
+            modifier = Modifier
+                .padding(4.dp)
+                .size(16.dp),
+            contentDescription = "",
+            tint = MaterialTheme.colors.primary
+        )
+    }
+}
+
+@Composable
+fun PetCell(
+    modifier: Modifier,
+    colors: Colors
+) {
+    Card(
+        modifier = modifier.padding(bottom = 20.dp),
+        elevation = 1.dp,
+        shape = RoundedCornerShape(17.dp),
+        backgroundColor = MaterialTheme.colors.surface,
+        border = BorderStroke(
+            width = 2.dp,
+            color = colors.onSurface.copy(.06f)
+        ),
+    ) {
+        Column {
+            ConstraintLayout {
+                val favIconRef = createRef()
+
+                Image(
+                    painter = painterResource(id = R.drawable.dog1),
+                    contentScale = ContentScale.Crop,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .height(128.dp)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(17.dp))
+                        .padding(horizontal = 1.dp),
+                )
+
+                LikeButton(
+                    modifier = Modifier
+                        .constrainAs(favIconRef) {
+                            end.linkTo(parent.end)
+                        },
+                )
+            }
+
+            Column(
+                modifier = Modifier.padding(
+                    start = 16.dp,
+                    end = 16.dp,
+                    top = 8.dp,
+                    bottom = 16.dp,
+                )
+            ) {
+                val textColor = Color(0xffec7172)
+                val bgColor = Color(0xffFFDEDE)
+
+                val blueText = Color(0XFF3270F6)
+                val blueBg = Color(0xffbdd7ff)
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        text = "Nora",
+                        style = MaterialTheme.typography.subtitle1,
+                        fontSize = 16.sp
+                    )
+
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_mars),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .size(24.dp)
+                            .align(alignment = Alignment.CenterVertically),
+                        tint = blueText
+                    )
+                }
+                Spacer(modifier = Modifier.height(6.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = "Corgi",
+                        style = MaterialTheme.typography.overline
+                    )
+                    DotDivider(
+                        modifier = Modifier.align(Alignment.CenterVertically),
+                    )
+                    Text(
+                        text = "8 mth.",
+                        modifier = Modifier
+                            .align(alignment = Alignment.CenterVertically),
+                        style = MaterialTheme.typography.overline,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@ExperimentalFoundationApi
+@Composable
 fun MyApp() {
     Scaffold {
         Surface {
@@ -227,12 +368,14 @@ fun MyApp() {
             val colors = MaterialTheme.colors
             val typography = MaterialTheme.typography
             Column {
+                val outerPadding = 16.dp
+                val outerModifier = Modifier.padding(
+                    top = outerPadding,
+                    start = outerPadding,
+                    end = outerPadding
+                )
                 Column(
-                    modifier = Modifier.padding(
-                        top = 16.dp,
-                        start = 16.dp,
-                        end = 16.dp
-                    )
+                    modifier = outerModifier
                 ) {
                     SearchBar(typography)
 
@@ -274,7 +417,7 @@ fun MyApp() {
 
                 val list = listOf("Dogs", "Cats", "Birds", "Rabbits", "Fish")
 
-                LazyRow(modifier = Modifier.padding(start = 16.dp)) {
+                LazyRow(modifier = Modifier.padding(start = outerPadding)) {
                     items(list) { item ->
                         when (item) {
                             "Dogs" -> PetCategory(
@@ -290,7 +433,7 @@ fun MyApp() {
                                 item = item,
                                 modifier = Modifier
                                     .border(
-                                        width = 1.dp,
+                                        width = 2.dp,
                                         color = colors.onSurface.copy(.06f),
                                         shape = RoundedCornerShape(15.dp),
                                     ),
@@ -301,6 +444,33 @@ fun MyApp() {
                         }
                         Spacer(modifier = Modifier.width(16.dp))
                     }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                LazyVerticalGrid(
+                    modifier = Modifier.padding(horizontal = outerPadding),
+                    cells = GridCells.Fixed(2)
+                ) {
+                    itemsIndexed(
+                        listOf(
+                            "Dog1",
+                            "Dog2",
+                            "Dog3",
+                            "Dog4",
+                            "Dog5",
+                            "Dog6"
+                        )
+                    ) { index, item ->
+
+                        val padding = 10.dp
+                        val modifier = when {
+                            index % 2 == 0 -> Modifier.padding(end = padding)
+                            else -> Modifier.padding(start = padding)
+                        }
+                        PetCell(modifier, colors)
+                    }
+
                 }
             }
         }
@@ -313,6 +483,7 @@ fun MyApp() {
  *
  **/
 
+@ExperimentalFoundationApi
 @Composable
 @Preview
 fun LightPreview() {
@@ -321,6 +492,7 @@ fun LightPreview() {
     }
 }
 
+@ExperimentalFoundationApi
 @Composable
 @Preview
 fun DarkPreview() {
