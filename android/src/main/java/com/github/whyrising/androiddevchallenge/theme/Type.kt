@@ -23,7 +23,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.github.whyrising.androiddevchallenge.R
 
-// TODO: Replace with your own fonts in the font resource directory
 private val Montserrat = FontFamily(
     Font(R.font.montserrat_regular),
     Font(R.font.montserrat_medium, FontWeight.W500),
