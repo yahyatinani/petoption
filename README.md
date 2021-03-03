@@ -15,9 +15,9 @@ The most interesting part of my submission is the fact that I was able to build 
 
 ## :camera_flash: Screenshots
 
-<img src="results/screenshot_1.png" width="300" /><img src="results/screenshot_2.png" width="300"/><img src="art/screenshot_3.png" width="300" />
+<img src="results/screenshot_1.png" width="250" />  <img src="results/screenshot_2.png" width="250"/>  <img src="art/screenshot_3.png" width="250" />
 
-<img src="art/screenshot_1_dark.png" width="300" /><img src="art/screenshot_2_dark.png" width="300" /><img src="art/screenshot_3_dark.png" width="300" />
+<img src="art/screenshot_1_dark.png" width="250" />  <img src="art/screenshot_2_dark.png" width="250" />  <img src="art/screenshot_3_dark.png" width="250" />
 
 ## License
 
