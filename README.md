@@ -10,7 +10,7 @@ Petoption is a modern pet adoption app that will help you find your special pet 
 
 ## :bulb: Motivation and Context
 
-The most interesting part of my submission is the fact that I was able to build a beatiful modern app from scratch and still have fun doing it. I'm so proud of Jetpack Compose and the Jetpack Compose team, they've really come a long way. looking forward to the stable release :smile:.
+The most interesting part of my submission is the fact that I was able to build a beautiful modern app from scratch and still have fun doing it. I'm so proud of Jetpack Compose and the Jetpack Compose team, they've really come a long way. looking forward to the stable release :smile:.
 
 
 ## :camera_flash: Screenshots
