@@ -36,7 +36,7 @@ class MainViewModel : ViewModel() {
     val pets = listOf(
         PetViewModel(
             id = R.drawable.dog1,
-            name = "Name 1",
+            name = "Charlie",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
@@ -47,7 +47,7 @@ class MainViewModel : ViewModel() {
         ),
         PetViewModel(
             id = R.drawable.dog2,
-            name = "Name 2",
+            name = "Sofi",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
@@ -57,7 +57,7 @@ class MainViewModel : ViewModel() {
         ),
         PetViewModel(
             id = R.drawable.dog3,
-            name = "Name 3",
+            name = "Henry",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
@@ -67,7 +67,7 @@ class MainViewModel : ViewModel() {
         ),
         PetViewModel(
             id = R.drawable.dog4,
-            name = "Name 3",
+            name = "Mocha",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
@@ -78,7 +78,7 @@ class MainViewModel : ViewModel() {
         ),
         PetViewModel(
             id = R.drawable.dog5,
-            name = "Name 5",
+            name = "Molly",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
@@ -88,7 +88,7 @@ class MainViewModel : ViewModel() {
         ),
         PetViewModel(
             id = R.drawable.dog6,
-            name = "Name 3",
+            name = "Teddy",
             age = "9 mth.",
             weight = 6,
             breed = "Breed",
