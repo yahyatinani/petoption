@@ -2,6 +2,13 @@ name: Check
 
 on:
   push:
+    paths-ignore:
+      - 'doc/**'
+      - 'art/**'
+      - 'results/**'
+      - 'docs/**'
+      - '*.md'
+      - '*.yml'
     branches:
       - main
 
