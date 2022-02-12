@@ -15,6 +15,7 @@
  */
 package com.github.whyrising.androiddevchallenge.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -72,7 +73,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
-import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import com.github.whyrising.androiddevchallenge.R
 import com.github.whyrising.androiddevchallenge.theme.Blue700
@@ -521,26 +521,30 @@ private fun makeNavPath(petVm: PetViewModel): String {
         "/${petVm.about}/$gender/${petVm.isLiked}"
 }
 
-/**
- *
- * Previews
- *
- **/
+/*
+ * -- Previews  ----------------------------------------------------------------
+ */
 
-@ExperimentalFoundationApi
 @Composable
-@Preview
-fun LightPreview() {
+@ExperimentalFoundationApi
+private fun MyAppPreview() {
+    val vm = MainViewModel()
+    val navController = rememberNavController()
     MyTheme {
-        MyApp(MainViewModel(), rememberNavController())
+        MyApp(vm, navController)
     }
 }
 
 @ExperimentalFoundationApi
 @Composable
-@Preview
+@Preview(showBackground = true)
+fun LightPreview() {
+    MyAppPreview()
+}
+
+@ExperimentalFoundationApi
+@Composable
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun DarkPreview() {
-    MyTheme(isDarkTheme = true) {
-        MyApp(MainViewModel(), rememberNavController())
-    }
+    MyAppPreview()
 }

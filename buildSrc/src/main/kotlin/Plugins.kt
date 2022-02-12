@@ -1,6 +1,6 @@
 object Plugins {
     object Spotless {
-        const val version = "5.7.0"
+        const val version = "6.2.2"
         const val id = "com.diffplug.spotless"
     }
 
@@ -10,7 +10,7 @@ object Plugins {
     }
 
     object Android {
-        private const val version = "7.0.0-alpha08"
+        private const val version = "7.1.1"
 
         const val gradle = "com.android.tools.build:gradle:$version"
     }

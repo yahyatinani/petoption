@@ -1,16 +1,16 @@
 object Libs {
-    const val kotlinVersion = "1.4.30"
+    const val kotlinVersion = "1.6.10"
     const val jvmTarget = "1.8"
 
     object AndroidMaterial {
-        private const val version = "1.3.0"
+        private const val version = "1.5.0"
 
         const val material = "com.google.android.material:material:$version"
     }
 
     object Compose {
         private const val gr = "androidx.compose"
-        const val version = "1.0.0-beta01"
+        const val version = "1.1.0-rc03"
 
         const val ui = "$gr.ui:ui:$version"
 
@@ -39,11 +39,11 @@ object Libs {
     }
 
     object AndroidX {
-        private const val version = "1.0.0-alpha03"
+        private const val version = "1.0.0"
         const val constraintlayout =
             "androidx.constraintlayout:constraintlayout-compose:$version"
         const val navigation =
-            "androidx.navigation:navigation-compose:1.0.0-alpha08"
+            "androidx.navigation:navigation-compose:2.4.1"
     }
 
     object LayoutInspector {
@@ -52,7 +52,7 @@ object Libs {
     }
 
     object Kotest {
-        private const val version = "4.4.1"
+        private const val version = "5.1.0"
 
         const val runner = "io.kotest:kotest-runner-junit5:$version"
         const val assertions = "io.kotest:kotest-assertions-core:$version"
@@ -61,7 +61,7 @@ object Libs {
 
     object Kotlinx {
         private const val group = "org.jetbrains.kotlinx"
-        private const val version = "1.4.2"
+        private const val version = "1.6.0"
 
         const val coroutines = "$group:kotlinx-coroutines-android:$version"
 

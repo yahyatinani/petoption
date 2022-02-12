@@ -4,13 +4,13 @@ plugins {
 }
 
 android {
-    compileSdkVersion(30)
-    buildToolsVersion("30.0.3")
+    compileSdk = 32
+    buildToolsVersion = "32.1.0-rc1"
 
     defaultConfig {
         applicationId = "com.github.whyrising.androiddevchallenge"
-        minSdkVersion(23)
-        targetSdkVersion(30)
+        minSdk = 23
+        targetSdk = 32
         versionCode = 1
         versionName = Ci.publishVersion
     }
@@ -46,7 +46,7 @@ android {
 
     kotlinOptions {
         jvmTarget = Libs.jvmTarget
-        useIR = true
+//        useIR = true
     }
 
     buildFeatures {
@@ -85,6 +85,7 @@ dependencies {
     implementation(Libs.Compose.activity)
     implementation(Libs.Compose.viewModels)
     implementation(Libs.Kotlinx.coroutines)
+    implementation("androidx.core:core-splashscreen:1.0.0-beta01")
 
     debugImplementation(Libs.LayoutInspector.uiTooling)
     debugImplementation(Libs.LayoutInspector.reflect)

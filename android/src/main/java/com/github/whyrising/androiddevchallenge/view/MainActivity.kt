@@ -20,14 +20,16 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.github.whyrising.androiddevchallenge.theme.MyTheme
 import com.github.whyrising.androiddevchallenge.viewmodels.MainViewModel
 
+@ExperimentalFoundationApi
 class MainActivity : ComponentActivity() {
     private val mainViewModel by viewModels<MainViewModel>()
 
-    @ExperimentalFoundationApi
     override fun onCreate(savedInstanceState: Bundle?) {
+        installSplashScreen()
         super.onCreate(savedInstanceState)
 
         setContent {

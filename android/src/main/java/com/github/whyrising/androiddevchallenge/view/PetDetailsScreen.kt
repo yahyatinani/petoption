@@ -15,6 +15,7 @@
  */
 package com.github.whyrising.androiddevchallenge.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -331,18 +332,27 @@ private val dogDesignTime = mapOf(
     "liked" to true,
 )
 
+/*
+ * -- Previews -----------------------------------------------------------------
+ */
+
 @Composable
-@Preview
-fun PetDetailsLightPreview() {
+private fun DetailPagePreview() {
+    val mainViewModel = MainViewModel()
+    val navController = rememberNavController()
     MyTheme {
-        PetDetails(rememberNavController(), dogDesignTime, MainViewModel())
+        PetDetails(navController, dogDesignTime, mainViewModel)
     }
 }
 
 @Composable
-@Preview
+@Preview(showBackground = true)
+fun PetDetailsLightPreview() {
+    DetailPagePreview()
+}
+
+@Composable
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 fun PetDetailsDarkPreview() {
-    MyTheme(isDarkTheme = true) {
-        PetDetails(rememberNavController(), dogDesignTime, MainViewModel())
-    }
+    DetailPagePreview()
 }
